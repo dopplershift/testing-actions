@@ -25,10 +25,9 @@ jobs:
               draft: true,
               body: body
             };
-            const match = milestone.description.match(/branch:\s*(\w+)/);
+            const match = milestone.description.match(/branch:\s*([^\s]+)/);
             if (!!match) {
-              console.log('Found branch')
-              console.log(match)
               params.target_commitish = match[1];
+              console.log('Found target branch:', params.target_commitish);
             }
             await github.repos.createRelease(params);
