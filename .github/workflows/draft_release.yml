@@ -15,25 +15,36 @@ jobs:
           script: |
             const milestone = context.payload.milestone;
 
+            // Find issues and PRs for this milestone
             const items = await github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'all',
               milestone: milestone.number
             });
-            console.log(items)
+
+            // Get just the issues and format into a section for the release notes
             const issues = items.data.filter(i => !i.pull_request);
             const issue_text = '### Issues Closed\n' +
                                issues.map(i => `* [Issue ${i.number}](${i.url}) - ${i.title}\n`)
                                .join('') + `\nIn this release ${issues.length} issues were closed.`;
+
+            // Now do the same for the PRs
             const prs = items.data.filter(i => !!i.pull_request);
             const pr_text = '### Pull Requests Merged\n' +
-                            prs.map(i => `* [PR ${i.number}](${i.url}) - ${i.title}, by ${i.user.login}\n`)
+                            prs.map(i => `* [PR ${i.number}](${i.url}) - ${i.title}, by @${i.user.login}\n`)
                             .join('') + `\nIn this release ${prs.length} pull requests were closed.`;
+
+            // Add the list of people who contributed PRs
             const contrib_text = '### Contributors\n' +
                                  Array.from(new Set(items.data.map(i => '@' + i.user.login))).join(', ') +
                                  ' contributed code to this release.';
+
+            // Assemble into the body of the release
             const body = [milestone.description, contrib_text, issue_text, pr_text].join('\n');
+
+            // Allows us to optionally pass in a branch of if there's one specified in the
+            // text of the milestone
             params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
