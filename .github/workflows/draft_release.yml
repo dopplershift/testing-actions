@@ -15,15 +15,22 @@ jobs:
           script: |
             console.log(context.payload)
 
-            const title = context.payload.milestone.title;
-            const tag = 'v' + title;
-            const name = title;
+            const milestone = context.payload.milestone;
+            const title = .title;
+            const desc = milestone.description;
             const body = 'Testing body';
-            await github.repos.createRelease({
+            params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_name: tag,
-              name: name,
+              tag_name: 'v' + milestone.title,
+              name: milestone.title,
               draft: true,
               body: body
-            });
+            };
+            const match = desc.match(/branch:\s*(\w+)/)
+            if (!!match) {
+              console.log('Found branch')
+              console.log(match)
+              params.target_commitish = match[1];
+            }
+            await github.repos.createRelease(params);
