@@ -14,7 +14,6 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const milestone = context.payload.milestone;
-            console.log(milestone)
 
             const issues = await github.issues.listForRepo({
               owner: context.repo.owner,
@@ -23,7 +22,11 @@ jobs:
               milestone: milestone.number
             });
             console.log(issues)
-            const body = issues.data.map(i => i.title).join("\n");
+            const issue_text = '##Issues Closed\n' + issues.data.filter(i => !i.pull_request)
+                                                     .map(i => '* ' + i.title).join("\n");
+            const pr_text = '##Pull Requests Merged\n' + issues.data.filter(i => !!i.pull_request)
+                                                         .map(i => '* ' + i.title).join("\n");
+            const body = [milestone.description, issue_text, pr_text].join('\n');
             params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
