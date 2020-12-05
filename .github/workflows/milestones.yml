@@ -15,27 +15,27 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             console.log(context)
-            if (!context.payload.pull_request.milestone) {
-              milestones = await github.issues.listMilestones({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                state: 'open',
-                sort: 'due_on',
-                direction: 'asc'
-              })
-
-              if (milestones.data.length === 0) {
-                console.log('There are no milestones, skipping.');
-                return;
-              }
-
-              console.log(milestones)
-              console.log(milestones.data[0])
-              await github.pulls.update({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.payload.pull_request.number,
-                milestone: milestones.data[0].number
-              });
-              core.setOutput('milestone', milestones.data[0]);
+            if (!!context.payload.pull_request.milestone) {
+              console.log('PR has existing milestone, skipping.');
+              return;
             }
+            milestones = await github.issues.listMilestones({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              sort: 'due_on',
+              direction: 'asc'
+            })
+
+            if (milestones.data.length === 0) {
+              console.log('There are no milestones, skipping.');
+              return;
+            }
+
+            await github.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              milestone: milestones.data[0].number
+            });
+            core.setOutput('milestone', milestones.data[0]);
