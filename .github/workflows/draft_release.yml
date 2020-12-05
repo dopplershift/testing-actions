@@ -22,11 +22,16 @@ jobs:
               milestone: milestone.number
             });
             console.log(issues)
-            const issue_text = '##Issues Closed\n' + issues.data.filter(i => !i.pull_request)
-                                                     .map(i => '* ' + i.title).join("\n");
-            const pr_text = '##Pull Requests Merged\n' + issues.data.filter(i => !!i.pull_request)
-                                                         .map(i => '* ' + i.title).join("\n");
-            const body = [milestone.description, issue_text, pr_text].join('\n');
+            const issue_text = '## Issues Closed\n' + issues.data
+                               .filter(i => !i.pull_request)
+                               .map(i => `* [Issue ${i.number}](${i.url}) - ${i.title}\n`)
+                               .join("");
+            const pr_text = '## Pull Requests Merged\n' + issues.data
+                            .filter(i => !!i.pull_request)
+                            .map(i => `* [PR ${i.number}](${i.url}) - ${i.title}\n`)
+                            .join("");
+            const contrib_text = "## Contributors\n" + "TBD";
+            const body = [milestone.description, contrib_text, issue_text, pr_text].join("\n");
             params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
