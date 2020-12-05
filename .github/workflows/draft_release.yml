@@ -13,10 +13,15 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(context.payload)
-
             const milestone = context.payload.milestone;
-            const body = 'Testing body';
+            console.log(milestone0)
+
+            const issues = github.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              milestone: milestone.number;
+            });
+            const body = issues.map(i => i.title).join("\n");
             params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
