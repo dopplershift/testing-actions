@@ -15,23 +15,24 @@ jobs:
           script: |
             const milestone = context.payload.milestone;
 
-            const issues = await github.issues.listForRepo({
+            const items = await github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'all',
               milestone: milestone.number
             });
-            console.log(issues)
-            const issue_text = '## Issues Closed\n' + issues.data
-                               .filter(i => !i.pull_request)
-                               .map(i => `* [Issue ${i.number}](${i.url}) - ${i.title}\n`)
-                               .join("");
-            const pr_text = '## Pull Requests Merged\n' + issues.data
-                            .filter(i => !!i.pull_request)
-                            .map(i => `* [PR ${i.number}](${i.url}) - ${i.title}\n`)
-                            .join("");
-            const contrib_text = "## Contributors\n" + "TBD";
-            const body = [milestone.description, contrib_text, issue_text, pr_text].join("\n");
+            console.log(items)
+            const issues = items.data.filter(i => !i.pull_request);
+            const issue_text = '### Issues Closed\n' +
+                               issues.map(i => `* [Issue ${i.number}](${i.url}) - ${i.title}\n`)
+                               .join('') + `\nIn this release ${issues.length} issues were closed.`;
+            const prs = issues.data.filter(i => !!i.pull_request);
+            const pr_text = '### Pull Requests Merged\n' +
+                            prs.map(i => `* [PR ${i.number}](${i.url}) - ${i.title}, by ${i.user.login}\n`)
+                            .join('') + `\nIn this release ${prs.length} pull requests were closed.`;
+            const contrib_text = '### Contributors\n' + Set(items.data.map(i => '@' + i.user.login)).join(', ') +
+                                 ' contributed code to this release.';
+            const body = [milestone.description, contrib_text, issue_text, pr_text].join('\n');
             params = {
               owner: context.repo.owner,
               repo: context.repo.repo,
