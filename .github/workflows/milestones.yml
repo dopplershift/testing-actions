@@ -28,7 +28,7 @@ jobs:
                 return;
               }
 
-              const sortedMilestones = milestones.data
+              sortedMilestones = milestones.data
                 .filter((v) => compareVersions.validate(v.title))
                 .sort((a, b) => {
                   return compareVersions(a.title, b.title);
