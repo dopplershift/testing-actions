@@ -1,3 +1,5 @@
+# If a PR doesn't have a milestone assigned when it's merged, assign it the
+# one that's scheduled next.
 name: Ensure Milestone
 on:
   pull_request:
