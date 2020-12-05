@@ -1,7 +1,7 @@
 name: Ensure Milestone
 on:
   pull_request_target:
-    types: [closed]
+    types: [closed, opened, reopened]
 
 jobs:
   sync:
