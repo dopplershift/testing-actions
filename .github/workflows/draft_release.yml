@@ -14,7 +14,7 @@ jobs:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const milestone = context.payload.milestone;
-            console.log(milestone0)
+            console.log(milestone)
 
             const issues = github.issues.listForRepo({
               owner: context.repo.owner,
