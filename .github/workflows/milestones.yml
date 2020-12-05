@@ -29,10 +29,10 @@ jobs:
                 return;
               }
 
-              await client.issues.update({
+              await github.pulls.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                issue_number: issue.number,
+                issue_number: context.issue.number,
                 milestone: milestones[0].number
               });
               core.setOutput('milestone', milestones[0]);
