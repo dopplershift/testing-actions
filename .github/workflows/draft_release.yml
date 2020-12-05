@@ -16,7 +16,7 @@ jobs:
             const milestone = context.payload.milestone;
             console.log(milestone)
 
-            const issues = github.issues.listForRepo({
+            const issues = await github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
               milestone: milestone.number
