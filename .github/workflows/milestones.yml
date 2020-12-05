@@ -14,13 +14,14 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            console.log(context.payload)
             console.log(context)
             if (!context.payload.pull_request.milestone) {
-              milestones = await github.issues.listMilestonesForRepo({
+              milestones = await github.issues.listMilestones({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                state: 'open'
+                state: 'open',
+                sort: 'due_on',
+                direction: 'asc'
               })
 
               if (milestones.data.length === 0) {
@@ -28,17 +29,11 @@ jobs:
                 return;
               }
 
-              sortedMilestones = milestones.data
-                .filter((v) => compareVersions.validate(v.title))
-                .sort((a, b) => {
-                  return compareVersions(a.title, b.title);
-                });
-
               await client.issues.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 issue_number: issue.number,
-                milestone: sortedMilestones[0].number
+                milestone: milestones[0].number
               });
-              core.setOutput('milestone', sortedMilestones[0]);
+              core.setOutput('milestone', milestones[0]);
             }
