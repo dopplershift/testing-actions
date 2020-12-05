@@ -19,7 +19,7 @@ jobs:
             const issues = await github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              state: all,
+              state: 'all',
               milestone: milestone.number
             });
             console.log(issues)
