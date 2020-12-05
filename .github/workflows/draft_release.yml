@@ -19,7 +19,7 @@ jobs:
             const issues = github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              milestone: milestone.number;
+              milestone: milestone.number
             });
             const body = issues.map(i => i.title).join("\n");
             params = {
