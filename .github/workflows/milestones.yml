@@ -17,7 +17,7 @@ jobs:
             console.log(context.payload)
             console.log(context)
             if (!context.payload.pull_request.milestone) {
-              await const milestones = github.issues.listMilestonesForRepo({
+              await milestones = github.issues.listMilestonesForRepo({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 state: 'open'
