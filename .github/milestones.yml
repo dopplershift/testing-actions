@@ -1,0 +1,42 @@
+name: Ensure Milestone
+on:
+  pull_request_target:
+    types: [closed, opened, reopened]
+
+jobs:
+  sync:
+    name: Assign Milestone
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            console.log(context.payload)
+            console.log(context)
+            if (!context.payload.pull_request?.milestone) {
+              await const milestones = github.issues.listMilestonesForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'open'
+              })
+
+              if (milestones.data.length === 0) {
+                console.log('There are no milestones, skipping.');
+                return;
+              }
+
+              const sortedMilestones = milestones.data
+                .filter((v) => compareVersions.validate(v.title))
+                .sort((a, b) => {
+                  return compareVersions(a.title, b.title);
+                });
+
+              await client.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                milestone: sortedMilestones[0].number
+              });
+              core.setOutput('milestone', sortedMilestones[0]);
+            }
