@@ -29,6 +29,9 @@ jobs:
                 return;
               }
 
+              console.log(milestones)
+              console.log(milestones[0])
+              console.log(context.payload.pull_request)
               await github.pulls.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
