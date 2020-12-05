@@ -30,7 +30,7 @@ jobs:
             const pr_text = '### Pull Requests Merged\n' +
                             prs.map(i => `* [PR ${i.number}](${i.url}) - ${i.title}, by ${i.user.login}\n`)
                             .join('') + `\nIn this release ${prs.length} pull requests were closed.`;
-            const contrib_text = '### Contributors\n' + Set(items.data.map(i => '@' + i.user.login)).join(', ') +
+            const contrib_text = '### Contributors\n' + new Set(items.data.map(i => '@' + i.user.login)).join(', ') +
                                  ' contributed code to this release.';
             const body = [milestone.description, contrib_text, issue_text, pr_text].join('\n');
             params = {
