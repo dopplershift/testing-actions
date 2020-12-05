@@ -15,8 +15,9 @@ jobs:
           script: |
             console.log(context.payload)
 
-            const tag = 'TagName';
-            const name = 'Release Name';
+            const title = context.payload.milestone.title;
+            const tag = 'v' + title;
+            const name = title;
             const body = 'Testing body';
             await github.repos.createRelease({
               owner: context.repo.owner,
