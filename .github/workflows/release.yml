@@ -1,0 +1,24 @@
+name: Make Release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  packages:
+    name: Release Packages
+    environment:
+      name: PyPI
+      url: https://pypi.org/project/MetPy/
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 10
+
+    - name: Get tags
+      run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+    - name: Publish
+      run: echo ${{ secrets.PYPI_TOKEN }} | rev
