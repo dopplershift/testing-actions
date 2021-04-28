@@ -1,0 +1,34 @@
+name: Manage doc versions
+
+on:
+  push:
+    branches:
+      - gh-pages
+    paths-ignore:
+      - 'dev/**'
+
+jobs:
+  doc-versions:
+    name: Handle new version of docs
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+
+    - name: Install packaging
+      run: python -m pip install packaging
+
+    - name: Update listing of versions
+      run: python versions.py
+
+    - name: Commit changes
+      run: |
+        git config user.name $GITHUB_ACTOR
+        git config user.name $GITHUB_ACTOR@users.noreply.github.com
+        git add latest versions.json
+        git commit -am "Update version information" || true
+        git push
