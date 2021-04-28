@@ -5,7 +5,7 @@ on:
     branches:
       - gh-pages
     paths-ignore:
-      - 'dev'
+      - 'dev/**'
 
 jobs:
   doc-versions:
