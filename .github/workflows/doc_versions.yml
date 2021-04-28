@@ -27,5 +27,6 @@ jobs:
       run: |
         git config user.name $GITHUB_ACTOR
         git config user.name $GITHUB_ACTOR@users.noreply.github.com
+        git add latest versions.json
         git commit -am "Update version information" || true
         git push
