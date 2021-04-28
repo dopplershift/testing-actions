@@ -17,7 +17,10 @@ jobs:
 
     - uses: actions/setup-python@v2
 
-    - name: Update versions
+    - name: Install packaging
+      run: python -m pip install packaging
+
+      - name: Update versions
       run: python versions.py
 
     - name: Commit changes
