@@ -20,7 +20,7 @@ jobs:
     - name: Install packaging
       run: python -m pip install packaging
 
-      - name: Update versions
+    - name: Update versions
       run: python versions.py
 
     - name: Commit changes
