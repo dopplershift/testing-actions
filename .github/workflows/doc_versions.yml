@@ -1,0 +1,24 @@
+name: Manage doc versions
+
+on:
+  push:
+    branches:
+      - gh-pages
+    paths:
+      - 'v[0-9]+.[0-9]+/'
+      - 'v[0-9]+.[0-9]+/**'
+
+jobs:
+  doc-versions:
+    name: Handle new version of docs
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 10
+    - name: Update versions.json
+      run: ls *
+
+    - name: Upadate latest link
+      run: echo 'Update link'
