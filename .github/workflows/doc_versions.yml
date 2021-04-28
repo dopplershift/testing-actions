@@ -25,10 +25,12 @@ jobs:
     - name: Update listing of versions
       run: |
         python << EOF
-        import json, pathlib, packaging
+        import json
+        from pathlib import Path
+        from packaging import version
 
         # Get all paths that are versions
-        vers = sorted(packaging.version.parse(str(p)) for p in pathlib.Path().glob('v[0-9]*'))
+        vers = sorted(version.parse(str(p)) for p in Path().glob('v[0-9]*'))
 
         # Set up our version dictionary
         versions = dict(versions=['latest', 'dev'],
@@ -40,7 +42,7 @@ jobs:
             json.dump(versions, verfile)
 
         # Update the 'latest' symlink
-        latest = pathlib.Path('latest')
+        latest = Path('latest')
         latest.unlink(missing_ok=True)
         latest.symlink_to(versions['latest'], target_is_directory=True)
         EOF
