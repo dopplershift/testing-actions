@@ -14,10 +14,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 10
-    - name: Update versions.json
-      run: ls *
 
-    - name: Update latest link
-      run: echo 'Update link'
+    - uses: actions/setup-python@v2
+
+    - name: Update versions
+      run: python versions.py
+
+    - name: Commit changes
+      run: |
+        git commit -am "Update version information"
+        git push
