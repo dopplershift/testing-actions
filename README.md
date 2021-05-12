@@ -6,3 +6,5 @@ Current actions:
 * Automated testing
 * Create release draft on milestone close
 * Create packages when release is published
+
+Dumb line to be removed.
