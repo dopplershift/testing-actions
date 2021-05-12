@@ -1,4 +1,4 @@
 # Actions Testing
-Empty repo for using and testing actions
+This is an empty repo for using and testing GitHub Actions.
 
-Now has basic workflow using github-script.
+It now has basic workflow using github-script.
