@@ -41,6 +41,7 @@ jobs:
               console.log('There are no milestones, skipping.');
               return;
             }
+            console.log(context.payload)
 
             await github.issues.update({
               owner: context.repo.owner,
