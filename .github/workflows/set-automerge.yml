@@ -1,0 +1,20 @@
+name: Set Automerge
+
+on:
+  workflow_run:
+    workflows: ["Check Automerge"]
+    types: [completed]
+
+jobs:
+  SetAutomerge:
+    name: Set Automerge
+    runs-on: ubuntu-latest
+    # if: ${{ github.event.workflow_run. }}
+
+    steps:
+      - uses: actions/github-script@v4.0.2
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            console.log(context.payload);
+      - run: echo ${{ github.event }}

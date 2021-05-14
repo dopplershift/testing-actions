@@ -1,0 +1,17 @@
+name: Check Automerge
+
+on:
+  pull_request:
+    paths:
+      - ci/linting_requirements.txt
+
+jobs:
+  SetFlag:
+    runs-on: ubuntu-latest
+    outputs:
+      automerge: ${{ steps.setflag.outputs.flag }}
+
+    steps:
+      - name: Set Flag
+        id: setflag
+        run: echo "::set-output name=flag::true"
