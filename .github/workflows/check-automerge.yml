@@ -10,7 +10,7 @@ jobs:
   setautomerge:
     name: Set Automerge
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    if: github.actor == 'dopplershift'
 
     steps:
       - name: Check changed files
