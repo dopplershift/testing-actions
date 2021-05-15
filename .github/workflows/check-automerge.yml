@@ -1,17 +1,22 @@
 name: Check Automerge
 
 on:
-  pull_request:
-    paths:
-      - ci/linting_requirements.txt
+  pull_request_target:
 
 jobs:
-  SetFlag:
+  setautomerge:
+    name: Set Automerge
     runs-on: ubuntu-latest
-    outputs:
-      automerge: ${{ steps.setflag.outputs.flag }}
 
     steps:
-      - name: Set Flag
-        id: setflag
-        run: echo "::set-output name=flag::true"
+      - name: Check changed files
+        id: checkpath
+        uses: dorny/paths-filter@v2.10.1
+        with:
+          filters: |
+            ci:
+              - 'ci/linting_requirements.txt'
+
+      - name: Set Automerge
+        if: steps.checkpath.outputs.ci == 'true'
+        run: echo Setting automerge...
