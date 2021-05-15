@@ -3,11 +3,14 @@ name: Check Automerge
 on:
   pull_request_target:
 
+permissions:
+  pull-requests: write
+
 jobs:
   setautomerge:
     name: Set Automerge
     runs-on: ubuntu-latest
-    if: github.actor == 'dopplershift'
+    if: github.actor == 'dependabot[bot]'
 
     steps:
       - name: Check changed files
