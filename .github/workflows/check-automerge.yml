@@ -12,7 +12,7 @@ permissions:
   # deployments: write
   issues: write
   # packages: write
-  # pull-requests: write
+  pull-requests: write
   # repository-projects: write
   # security-events: write
   # statuses: write
@@ -36,7 +36,7 @@ jobs:
         if: steps.checkpath.outputs.ci == 'true'
         uses: actions/github-script@v4.0.2
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const query = `query GetPullRequestId($owner: String!, $repo: String!, $pullRequestNumber: Int!) {
               repository(owner: $owner, name: $repo) {
@@ -73,3 +73,16 @@ jobs:
             }`
             const resp = await github.graphql(mutation_query, merge_params);
             console.log(resp.enablePullRequestAutoMerge.pullRequest.autoMergeRequest);
+
+      - name: Approve PR
+        if: steps.checkpath.outputs.ci == 'true'
+        uses: actions/github-script@v4.0.2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const resp = await github.pulls.createReview({
+                ...context.repo,
+                pull_number: context.payload.number,
+                event: 'APPROVE'
+              });
+            console.log(resp);
