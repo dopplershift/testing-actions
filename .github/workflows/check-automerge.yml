@@ -45,7 +45,7 @@ jobs:
               pullRequestId: id_resp.repository.pullRequest.id,
               mergeMethod: mergeMethod
             };
-            const query = `mutation ($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
+            const mutation_query = `mutation ($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
               enablePullRequestAutoMerge(input: {
                 pullRequestId: $pullRequestId,
                 mergeMethod: 'MERGE'
@@ -60,5 +60,5 @@ jobs:
                 }
               }
             }`
-            const resp = await github.graphql(query, merge_params);
+            const resp = await github.graphql(mutation_query, merge_params);
             console.log(response.enablePullRequestAutoMerge.pullRequest.autoMergeRequest);
