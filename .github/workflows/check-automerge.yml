@@ -28,8 +28,15 @@ jobs:
         id: checkpath
         uses: dorny/paths-filter@v2.10.1
         with:
-          filters: .github/path-filters.yml
-
+          filters: |
+            ci:
+              - 'ci/**'
+            project:
+              - 'src/**'
+              - 'tests/**'
+              - 'docs/**'
+            linting:
+              - 'ci/linting_requirements.txt'
       - name: Set Automerge
         if: steps.checkpath.outputs.linting == 'true' && steps.checkpath.outputs.project == 'false'
         uses: actions/github-script@v4.0.2

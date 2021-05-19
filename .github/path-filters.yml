@@ -1,8 +1,0 @@
-ci:
-  - 'ci/**'
-project:
-  - 'src/**'
-  - 'tests/**'
-  - 'docs/**'
-linting:
-  - 'ci/linting_requirements.txt'
