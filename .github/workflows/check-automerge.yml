@@ -28,12 +28,10 @@ jobs:
         id: checkpath
         uses: dorny/paths-filter@v2.10.1
         with:
-          filters: |
-            ci:
-              - 'ci/linting_requirements.txt'
+          filters: .github/path-filters.yml
 
       - name: Set Automerge
-        if: steps.checkpath.outputs.ci == 'true'
+        if: steps.checkpath.outputs.linting == 'true' && steps.checkpath.outputs.project == 'false'
         uses: actions/github-script@v4.0.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -75,7 +73,7 @@ jobs:
             console.log(resp.enablePullRequestAutoMerge.pullRequest.autoMergeRequest);
 
       - name: Approve PR
-        if: steps.checkpath.outputs.ci == 'true'
+        if: steps.checkpath.outputs.linting == 'true' && steps.checkpath.outputs.project == 'false'
         uses: actions/github-script@v4.0.2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
