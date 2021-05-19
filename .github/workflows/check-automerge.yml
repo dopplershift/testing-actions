@@ -3,8 +3,8 @@ name: Check Automerge
 on:
   pull_request_target:
 
-permissions:
-  pull-requests: write
+permissions: write-all
+#  pull-requests: write
 
 jobs:
   setautomerge:
