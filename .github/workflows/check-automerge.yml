@@ -43,12 +43,12 @@ jobs:
             console.log(id_resp);
             const merge_params = {
               pullRequestId: id_resp.repository.pullRequest.id,
-              mergeMethod: mergeMethod
+              mergeMethod: 'MERGE'
             };
             const mutation_query = `mutation ($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
               enablePullRequestAutoMerge(input: {
                 pullRequestId: $pullRequestId,
-                mergeMethod: 'MERGE'
+                mergeMethod: $mergeMethod
               }) {
                 pullRequest {
                   autoMergeRequest {
