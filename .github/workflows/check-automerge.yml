@@ -3,8 +3,19 @@ name: Check Automerge
 on:
   pull_request_target:
 
-permissions: write-all
+#permissions: write-all
 #  pull-requests: write
+permissions:
+  actions: write
+  checks: write
+  contents: write
+  deployments: write
+  issues: write
+  # packages: write
+  # pull-requests: write
+  # repository-projects: write
+  # security-events: write
+  # statuses: write
 
 jobs:
   setautomerge:
@@ -61,4 +72,4 @@ jobs:
               }
             }`
             const resp = await github.graphql(mutation_query, merge_params);
-            console.log(response.enablePullRequestAutoMerge.pullRequest.autoMergeRequest);
+            console.log(resp.enablePullRequestAutoMerge.pullRequest.autoMergeRequest);
