@@ -23,4 +23,42 @@ jobs:
 
       - name: Set Automerge
         if: steps.checkpath.outputs.ci == 'true'
-        run: echo Setting automerge...
+        uses: actions/github-script@v4.0.2
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const query = `query GetPullRequestId($owner: String!, $repo: String!, $pullRequestNumber: Int!) {
+              repository(owner: $owner, name: $repo) {
+                pullRequest(number: $pullRequestNumber) {
+                  id
+                }
+              }
+            }`
+            const params = {
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pullRequestNumber: context.payload.number
+            };
+            const id_resp = await github.graphql(query, params);
+            console.log(id_resp);
+            const merge_params = {
+              pullRequestId: id_resp.repository.pullRequest.id,
+              mergeMethod: mergeMethod
+            };
+            const query = `mutation ($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
+              enablePullRequestAutoMerge(input: {
+                pullRequestId: $pullRequestId,
+                mergeMethod: 'MERGE'
+              }) {
+                pullRequest {
+                  autoMergeRequest {
+                    enabledAt
+                    enabledBy {
+                      login
+                    }
+                  }
+                }
+              }
+            }`
+            const resp = await github.graphql(query, merge_params);
+            console.log(response.enablePullRequestAutoMerge.pullRequest.autoMergeRequest);
