@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Tests
-      run: env | rev
+      run: sleep 30
