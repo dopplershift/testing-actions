@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     if: github.actor == 'dopplershift'
     outputs:
-      safe: ${{ steps.checkpath.outputs.linting == 'true' && steps.checkpath.outputs.project == 'false'} }
+      safe: ${{ steps.checkpath.outputs.linting == 'true' && steps.checkpath.outputs.project == 'false' }}
 
     steps:
       - name: Check changed files
