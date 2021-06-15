@@ -6,4 +6,5 @@ Current actions:
 * Automated testing
 * Create release draft on milestone close
 * Create packages when release is published
+* Set automerge on appropriate PRs
 
