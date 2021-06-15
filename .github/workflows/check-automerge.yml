@@ -35,12 +35,12 @@ jobs:
     needs: checkfiles
     if: needs.checkfiles.outputs.safe == 'true'
 
-    permissions:
-      actions: write
-      checks: write
-      contents: write
-      issues: write
-      pull-requests: write
+    permissions: write-all
+      # actions: write
+      # checks: write
+      # contents: write
+      # issues: write
+      # pull-requests: write
 
     steps:
       - name: Set Automerge
