@@ -67,5 +67,5 @@ jobs:
                 params.target_commitish = match[1];
                 console.log('Found target branch:', params.target_commitish);
               }
-            }
+            });
             await github.repos.createRelease(params);
