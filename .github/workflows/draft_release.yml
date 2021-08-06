@@ -40,13 +40,13 @@ jobs:
               // Now do the same for the PRs
               const prs = items.filter(i => !!i.pull_request);
               const pr_text = '### Pull Requests Merged\n' +
-                              prs.map(i => `* [PR ${i.number}](${i.html_url}) - ${i.title}, by @${i.user}\n`)
+                              prs.map(i => `* [PR ${i.number}](${i.html_url}) - ${i.title}, by @${i.user.login}\n`)
                               .join('') + `\n${prs.length} pull requests were closed in this release.`;
               console.log(prs)
 
               // Add the list of people who contributed PRs
               const contrib_text = '### Contributors\n' +
-                                  Array.from(new Set(items.map(i => '@' + i.user))).join(', ') +
+                                  Array.from(new Set(items.map(i => '@' + i.user.login))).join(', ') +
                                   ' contributed code to this release.';
 
               // Assemble into the body of the release
