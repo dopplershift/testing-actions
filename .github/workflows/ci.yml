@@ -10,18 +10,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Set up caching
-      uses: actions/cache@v3
-      id: cache-proj
-      with:
-        path: ~/local
-        key: proj-${{ runner.os }}-8.1.1-0
+    # - name: Set up caching
+    #   uses: actions/cache@v3
+    #   id: cache-proj
+    #   with:
+    #     path: ~/local
+    #     key: proj-${{ runner.os }}-8.1.1-0
 
-    - name: Write value
-      if: steps.cache-proj.outputs.cache-hit != 'true'
-      run: |
-        mkdir ~/local
-        echo 3.14159 > ~/local/pi.txt
+    # - name: Write value
+    #   if: steps.cache-proj.outputs.cache-hit != 'true'
+    #   run: |
+    #     mkdir ~/local
+    #     echo 3.14159 > ~/local/pi.txt
+
+
+    - name: MetPy's PROJ
+      uses: Unidata/MetPy/.github/actions/setup-proj@main
 
     - name: Tests
       run: sleep 10
