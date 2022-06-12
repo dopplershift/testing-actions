@@ -46,9 +46,9 @@ jobs:
     #     python -m pip install --upgrade pip setuptools
     #     python -m pip install --no-binary :all: shapely
 
-    # - name: Install dependencies
-    #   shell: bash
-    #   run: python -m pip install -r ci/${{ inputs.type }}_requirements.txt -c ci/${{ inputs.version-file }}
+    - name: Install dependencies
+      shell: bash
+      run: python -m pip install -r ci/test_requirements.txt -c ci/requirements.txt
 
     # - name: Install extra dependencies
     #   if: ${{ inputs.need-cartopy == 'true' }}
