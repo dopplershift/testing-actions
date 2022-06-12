@@ -24,8 +24,8 @@ jobs:
     #     echo 3.14159 > ~/local/pi.txt
 
 
-    - name: MetPy's PROJ
-      uses: Unidata/MetPy/.github/actions/setup-proj@main
+    - name: Setup PyPI
+      uses: Unidata/MetPy/.github/actions/install-pypi@main
 
     - name: Tests
       run: sleep 10
