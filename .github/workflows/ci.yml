@@ -25,17 +25,44 @@ jobs:
     #     mkdir ~/local
     #     echo 3.14159 > ~/local/pi.txt
 
-
-    - name: Setup PyPI
-      uses: Unidata/MetPy/.github/actions/install-pypi@main
+    - name: Set up Python ${{ inputs.python-version }}
+      uses: actions/setup-python@v4
       with:
-        need-cartopy: false
-        type: test
-        version-file: requirements.txt
         python-version: '3.10'
+        cache: 'pip'
+        cache-dependency-path: |
+          ci/test_requirements.txt
+          ci/requirements.txt
 
-    - name: MetPy PROJ
+    - name: Setup PROJ
       uses: Unidata/MetPy/.github/actions/setup-proj@main
+
+    # This installs the stuff needed to build and install Shapely and CartoPy from source.
+    # - name: Install CartoPy build dependencies
+    #   if: ${{ inputs.need-cartopy == 'true' }}
+    #   shell: bash
+    #   run: |
+    #     sudo apt-get install libgeos-dev
+    #     python -m pip install --upgrade pip setuptools
+    #     python -m pip install --no-binary :all: shapely
+
+    # - name: Install dependencies
+    #   shell: bash
+    #   run: python -m pip install -r ci/${{ inputs.type }}_requirements.txt -c ci/${{ inputs.version-file }}
+
+    # - name: Install extra dependencies
+    #   if: ${{ inputs.need-cartopy == 'true' }}
+    #   shell: bash
+    #   run: python -m pip install -r ci/extra_requirements.txt -c ci/${{ inputs.version-file }}
+
+    # - name: Download Cartopy Maps
+    #   if: ${{ inputs.need-cartopy == 'true' }}
+    #   shell: bash
+    #   run: ci/download_cartopy_maps.py
+
+    # - name: Install
+    #   shell: bash
+    #   run: python -m pip install -c ci/${{ inputs.version-file }} .
 
     - name: Tests
       run: sleep 10
