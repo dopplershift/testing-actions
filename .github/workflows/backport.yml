@@ -28,7 +28,7 @@ jobs:
       - name: Get backport branch
         id: get-branch
         run: |
-          git fetch origin 'refs/heads/*.x:refs/remotes/origin/*.x'
+          git fetch --no-tags origin 'refs/heads/*.x:refs/remotes/origin/*.x'
           echo "::set-output name=backport-branch::$(git branch -r | grep 'v.*.x' | sort | tail -n 1 | cut -d / -f 2)"
 
       - name: Apply PR commits to ${{ steps.get-branch.outputs.backport-branch}} branch
@@ -40,7 +40,7 @@ jobs:
         id: create-pr
         uses: peter-evans/create-pull-request@v4
         with:
-          title: 'Backport #${{ github.event.number }}'
+          title: '${{ github.event.pull_request.title }} (backport)'
           body: >
             Backport \#${{ github.event.number }} onto the
             ${{ steps.get-branch.outputs.backport-branch}} stable branch.
