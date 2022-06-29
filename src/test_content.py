@@ -2,4 +2,5 @@ import sys
 
 if __name__ == '__main__':
     import os
-    print('Hello!')
+    for i in range(10):
+        print(f'{i}...hi')
