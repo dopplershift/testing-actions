@@ -47,12 +47,12 @@ jobs:
         id: create-pr
         uses: peter-evans/create-pull-request@v4
         with:
-          title: Backport \#${{ context.issue.number }}
+          title: Backport \#${{ github.event.number }}
           body: |
-            Backport \#${{ context.issue.number }} onto the
+            Backport \#${{ github.event.number }} onto the
             ${{ steps.get-branch.outputs.backport-branch}} stable branch.
           base: ${{ steps.get-branch.outputs.backport-branch}}
-          branch: backport-pr${{ context.issue.number }}
+          branch: backport-pr${{ github.event.number }}
           delete-branch: true
 
       - name: Comment on completion
