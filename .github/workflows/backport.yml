@@ -64,9 +64,11 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
+            const workflow_url = `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`;
+            body = `🚨 Unable to [cleanly backport](${workflow_url}) this PR! 🚨`;
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '🚨 Unable to cleanly backport this PR! 🚨'
+              body: body
             })
