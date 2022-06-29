@@ -29,5 +29,5 @@ jobs:
 
       - name: Backport PR
         run: |
-          git checkout -b ${{ get-branch.outputs.backport-branch}} origin/${{ get-branch.outputs.backport-branch}}
+          git checkout -b ${{ steps.get-branch.outputs.backport-branch}} origin/${{ get-branch.outputs.backport-branch}}
           git cherry-pick ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
