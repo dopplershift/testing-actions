@@ -10,8 +10,7 @@ on:
     #   - labeled
 
 jobs:
-  backport:
-    name: Backport
+  Backport:
     runs-on: ubuntu-latest
     # if: >
     #   github.event.pull_request.merged
@@ -24,6 +23,9 @@ jobs:
     #   )
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 100
 
       - name: Get backport branch
         id: get-branch
