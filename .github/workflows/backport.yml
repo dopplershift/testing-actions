@@ -27,26 +27,51 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 100
 
+      - name: Set up git
+        run: |
+          git config --global user.email github-actions[bot]@users.noreply.github.com
+          git config --global user.name github-actions[bot]
+
       - name: Get backport branch
         id: get-branch
         run: |
           git fetch origin 'refs/heads/*.x:refs/remotes/origin/*.x'
           echo "::set-output name=backport-branch::$(git branch -r | grep 'v.*.x' | sort | tail -n 1 | cut -d / -f 2)"
 
-      - name: Backport PR
+      - name: Apply PR commits to ${{ steps.get-branch.outputs.backport-branch}} branch
         run: |
-          git config --global user.email github-actions[bot]@users.noreply.github.com
-          git config --global user.name github-actions[bot]
           git checkout -b ${{ steps.get-branch.outputs.backport-branch}} origin/${{ steps.get-branch.outputs.backport-branch}}
           git cherry-pick -x ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
 
+      - name: Create backport PR
+        id: create-pr
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: Backport \#${{ context.issue.number }}
+          body: |
+            Backport \#${{ context.issue.number }} onto the
+            ${{ steps.get-branch.outputs.backport-branch}} stable branch.
+          base: ${{ steps.get-branch.outputs.backport-branch}}
+          branch: backport-pr${{ context.issue.number }}
+          delete-branch: true
+
+      - name: Comment on completion
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🏁 Successfully backported as #${{ steps.create-pr.outputs.pull-request-number }}. 🏁'
+            })
+
       - name: Comment on error
         if: failure()
-        uses: actions/github-script@v3
+        uses: actions/github-script@v6
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            github.issues.createComment({
+            github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
