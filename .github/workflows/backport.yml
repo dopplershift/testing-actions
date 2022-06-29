@@ -40,7 +40,7 @@ jobs:
         id: create-pr
         uses: peter-evans/create-pull-request@v4
         with:
-          title: Backport #${{ github.event.number }}
+          title: 'Backport #${{ github.event.number }}'
           body: >
             Backport \#${{ github.event.number }} onto the
             ${{ steps.get-branch.outputs.backport-branch}} stable branch.
