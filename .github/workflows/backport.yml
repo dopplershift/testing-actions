@@ -24,7 +24,7 @@ jobs:
       - name: Get backport branch
         id: get-branch
         run: |
-          git fetch origin 'refs/heads/v*.x:refs/remotes/origin/v*.x'
+          git fetch origin 'refs/heads/*.x:refs/remotes/origin/*.x'
           echo "::set-output name=backport-branch::$(git branch -r | grep 'v.*.x' | cut -d / -f 2)"
 
       - name: Backport PR
