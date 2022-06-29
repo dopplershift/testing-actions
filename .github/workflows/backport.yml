@@ -21,7 +21,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Get backport branch
+        id: get-branch
+        run: |
+          git fetch origin 'refs/heads/v*.x:refs/remotes/origin/v*.x'
+          echo "::set-output name=backport-branch::$(git branch -r | grep 'v.*.x' | cut -d / -f 2)"
+
       - name: Backport PR
         run: |
-          git checkout v1.3.x
+          git checkout -b ${{ get-branch.outputs.backport-branch}} origin/${{ get-branch.outputs.backport-branch}}
           git cherry-pick ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
