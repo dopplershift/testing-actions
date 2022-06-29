@@ -21,6 +21,6 @@ jobs:
     #   )
     steps:
       - run: |
-        cat $GITHUB_EVENT_PATH
-        echo ${{ github.event.pull_request.head.sha }}
-        echo ${{ github.event.pull_request.head.sha }}
+          cat $GITHUB_EVENT_PATH
+          echo ${{ github.event.pull_request.head.sha }}
+          echo ${{ github.event.pull_request.head.sha }}
