@@ -1,4 +1,4 @@
-name: Backport
+name: Backport PRs
 
 permissions:
   pull-requests: write
@@ -13,10 +13,7 @@ on:
 jobs:
   Backport:
     runs-on: ubuntu-latest
-    if: >
-      github.event.pull_request.merged &&
-        (github.event.action == 'closed'
-        || (github.event.action == 'labeled' && contains(github.event.label.name, 'backport')))
+    if: github.event.pull_request.merged && contains( github.event.pull_request.labels.*.name, 'backport' )
     steps:
       - uses: actions/checkout@v3
         with:
