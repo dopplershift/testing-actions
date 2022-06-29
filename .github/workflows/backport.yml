@@ -35,8 +35,9 @@ jobs:
 
       - name: Backport PR
         run: |
+          git config --global user.email github-actions[bot]@users.noreply.github.com
           git checkout -b ${{ steps.get-branch.outputs.backport-branch}} origin/${{ steps.get-branch.outputs.backport-branch}}
-          git cherry-pick ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
+          git cherry-pick -x ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
 
       - name: Comment on error
         if: failure()
