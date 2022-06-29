@@ -31,3 +31,16 @@ jobs:
         run: |
           git checkout -b ${{ steps.get-branch.outputs.backport-branch}} origin/${{ steps.get-branch.outputs.backport-branch}}
           git cherry-pick ${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}
+
+      - name: Comment on error
+        if: failure()
+        uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚨 Unable to cleanly backport this PR! 🚨'
+            })
